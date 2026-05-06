@@ -369,7 +369,7 @@ export default function BleedingInSilence() {
                   <p className="poem-glow" style={{
                     fontFamily: "'Cormorant Garamond', serif",
                     fontStyle: "italic",
-                    fontSize: "15px",
+                    fontSize: "20px",
                     lineHeight: "1.9",
                     color: hoveredPoem === i ? "#ede5d8" : "rgba(232,224,212,0.75)",
                     whiteSpace: "pre-line",
