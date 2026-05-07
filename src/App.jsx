@@ -66,8 +66,170 @@ const thoughts = [
   { quote: "The rose doesn't mourn its petals. We do that for it.", label: "— Wilted Promises" },
 ];
 
+// Full poem content for detail pages
+const poemDetails = [
+  {
+    title: "Requiem for a Vow",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "You pressed your oath\ninto my palms like a coin—\nI spent it on silence.",
+      "And now I count\nthe echoes where your name\nused to live in me.",
+      "Even vows have roots\nthat reach past the last goodbye\ninto everything.",
+    ],
+    sig: "— for the one whose words outlasted their heart",
+  },
+  {
+    title: "The Last Petal",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Even roses learn\nto let go of themselves\nbefore the frost comes.",
+      "There is a kind of grace\nin that—the soft release\nno one asked them for.",
+      "I have been watching\nyou practice the same art,\npetal by petal.",
+      "And I, the garden,\nlearn again what I already knew:\nthat beauty costs.",
+    ],
+    sig: "— written in October, when everything was letting go",
+  },
+  {
+    title: "Ink & Ash",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "I wrote you in ink\nthat burns like memory—\nyou read none of it.",
+      "The page knows your name\nbetter than you knew yourself\nwhen I gave it there.",
+      "Still I keep writing,\nbecause the fire needs somewhere\nto put its hunger.",
+    ],
+    sig: "— she is the reason the ink wouldn't dry",
+  },
+  {
+    title: "Hollow Season",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Autumn isn't loss.\nIt is the tree confessing\nit was never whole.",
+      "We called it beauty—\nthe dying light, the bare branch—\nbecause we needed to.",
+      "I am the same tree.\nI am the same beautiful\nlie we tell ourselves.",
+    ],
+    sig: "— for every winter that arrived early",
+  },
+  {
+    title: "Tender Ruin",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "You called it loving.\nI called it standing still\nwhile the flood rose up.",
+      "There is a difference\nbetween choosing and sinking—\nyou never learned it.",
+      "But I did. God, I did.\nWater teaches what it means\nto be truly known.",
+    ],
+    sig: "— the flood remembers what we forgot",
+  },
+  {
+    title: "Unnamed Grief",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "There is no word for\nmissing someone who still breathes—\nso I made one: you.",
+      "A noun and a verb,\na season and a wound,\na you-shaped silence.",
+      "Languages have failed\neveryone who ever loved\nthe wrong way on time.",
+    ],
+    sig: "— for the unnamed, who feel it anyway",
+  },
+];
+
+function PoemPage({ poem, onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 1000,
+      background: "#0f0d0b",
+      overflowY: "auto",
+      animation: "fadeInPage 0.5s ease",
+    }}>
+      <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .poem-page-verse {
+          font-size: 18.5px;
+          line-height: 2.1;
+          color: #d4c9b8;
+          margin-bottom: 2.8rem;
+          white-space: pre-line;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        .poem-page-divider {
+          text-align: center;
+          color: #6b5e4e;
+          font-size: 18px;
+          margin: 0 0 2.8rem;
+          letter-spacing: 0.5em;
+          opacity: 0.5;
+        }
+        .close-btn {
+          background: none;
+          border: 1px solid rgba(139,26,26,0.3);
+          color: #6b5e4e;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 11px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          padding: 10px 24px;
+          cursor: pointer;
+          transition: border-color 0.3s, color 0.3s;
+          border-radius: 1px;
+        }
+        .close-btn:hover { border-color: rgba(139,26,26,0.8); color: #d4c9b8; }
+      `}</style>
+
+      {/* Close bar */}
+      <div style={{
+        position: "sticky", top: 0, zIndex: 10,
+        padding: "16px 40px",
+        background: "rgba(15,13,11,0.95)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(139,26,26,0.2)",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+      }}>
+        <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "18px", color: "rgba(200,160,128,0.6)" }}>
+          bleedinginsilence
+        </span>
+        <button className="close-btn" onClick={onClose}>← Back to Gallery</button>
+      </div>
+
+      {/* Poem content */}
+      <div style={{ maxWidth: "660px", margin: "0 auto", padding: "3rem 1.5rem 5rem", fontFamily: "'Cormorant Garamond', Georgia, serif", color: "#d4c9b8" }}>
+        {/* Title block */}
+        <div style={{ marginBottom: "3rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(139,26,26,0.3)", textAlign: "center" }}>
+          <p style={{ fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#6b5e4e", marginBottom: "1rem" }}>
+            {poem.collection}
+          </p>
+          <h1 style={{ fontSize: "30px", fontWeight: 400, fontStyle: "italic", lineHeight: 1.35, color: "#d4c9b8" }}>
+            {poem.title}
+          </h1>
+        </div>
+
+        {/* Stanzas */}
+        {poem.stanzas.map((stanza, i) => (
+          <div key={i}>
+            <p className="poem-page-verse">{stanza}</p>
+            {i < poem.stanzas.length - 1 && (
+              <p className="poem-page-divider">✦ &nbsp; ✦ &nbsp; ✦</p>
+            )}
+          </div>
+        ))}
+
+        {/* Signature */}
+        <div style={{ textAlign: "right", fontStyle: "italic", fontSize: "13px", color: "#6b5e4e", marginTop: "3.5rem", paddingTop: "1.2rem", borderTop: "1px solid rgba(139,26,26,0.2)", letterSpacing: "0.04em" }}>
+          {poem.sig}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function BleedingInSilence() {
   const [hoveredPoem, setHoveredPoem] = useState(null);
+  const [selectedPoem, setSelectedPoem] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
@@ -84,6 +246,9 @@ export default function BleedingInSilence() {
 
   return (
     <div style={{ background: "#080608", minHeight: "100vh", fontFamily: "'Cormorant Garamond', 'Georgia', serif", color: "#e8e0d4", overflowX: "hidden" }}>
+      {selectedPoem !== null && (
+        <PoemPage poem={poemDetails[selectedPoem]} onClose={() => setSelectedPoem(null)} />
+      )}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap');
 
@@ -355,6 +520,7 @@ export default function BleedingInSilence() {
                 style={{ background: poem.bg }}
                 onMouseEnter={() => setHoveredPoem(i)}
                 onMouseLeave={() => setHoveredPoem(null)}
+                onClick={() => setSelectedPoem(i)}
               >
                 {/* Ornamental corner marks */}
                 <div style={{ position: "absolute", top: "12px", left: "12px", width: "20px", height: "20px", borderTop: "1px solid rgba(160,120,50,0.3)", borderLeft: "1px solid rgba(160,120,50,0.3)", zIndex: 3, transition: "border-color 0.4s", borderColor: hoveredPoem === i ? "rgba(160,120,50,0.8)" : "rgba(160,120,50,0.3)" }} />
@@ -444,7 +610,7 @@ export default function BleedingInSilence() {
           {/* Book details */}
           <FadeIn delay={0.3}>
             <div>
-              <p className="section-label" style={{ marginBottom: "16px" }}>first edition</p>
+
               <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 400, color: "#ede5d8", marginBottom: "8px", lineHeight: 1.1 }}>
                 Wilted Promises
               </h3>
