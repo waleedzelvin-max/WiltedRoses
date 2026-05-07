@@ -473,7 +473,13 @@ export default function BleedingInSilence() {
 
               <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center" }}>
                 <a href="http://getbook.to/wiltedpromises" target="_blank" rel="noopener noreferrer"><button className="buy-btn" style={{ fontSize: "12px" }}>Order Now</button></a>
-                <button className="buy-btn" style={{ borderColor: "transparent", color: "rgba(160,120,50,0.7)", fontSize: "12px" }}>Read a Sample →</button>
+                <button
+                  className="buy-btn"
+                  style={{ borderColor: "transparent", color: "rgba(160,120,50,0.7)", fontSize: "12px" }}
+                  onClick={() => document.getElementById('thoughts')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Read a Sample →
+                </button>
               </div>
 
               <div style={{ display: "flex", gap: "40px", marginTop: "48px" }}>
