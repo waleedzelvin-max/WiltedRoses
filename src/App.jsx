@@ -28,46 +28,292 @@ const FadeIn = ({ children, delay = 0, className = "" }) => {
 
 const poems = [
   {
-    title: "Requiem for a Vow",
-    lines: ["You pressed your oath\ninto my palms like a coin—\nI spent it on silence.",],
+    title: "—Wilted Promises",
+    lines: ["I let you stain the noble parts of me.\nI showed you what it means...",],
     bg: "linear-gradient(160deg, #1a0610 0%, #2d0a1a 100%)",
   },
   {
-    title: "The Last Petal",
-    lines: ["Even roses learn\nto let go of themselves\nbefore the frost comes."],
+    title: "—Wilted Promises",
+    lines: ["I can’t control my lips,\nI fear my love is too large..."],
     bg: "linear-gradient(160deg, #0e0a1a 0%, #1c1030 100%)",
   },
   {
-    title: "Ink & Ash",
-    lines: ["I wrote you in ink\nthat burns like memory—\nyou read none of it."],
+    title: "—Wilted Promises",
+    lines: ["I still remember,\nthe way you said ‘I love you’...."],
     bg: "linear-gradient(160deg, #100a0a 0%, #241010 100%)",
   },
   {
-    title: "Hollow Season",
-    lines: ["Autumn isn't loss.\nIt is the tree confessing\nit was never whole."],
+    title: "Ghosts",
+    lines: ["The years go by and I sit there caged to you\nI found myself lost between love..."],
     bg: "linear-gradient(160deg, #0a0e14 0%, #101824 100%)",
   },
   {
-    title: "Tender Ruin",
-    lines: ["You called it loving.\nI called it standing still\nwhile the flood rose up."],
+    title: "Wine & Madness",
+    lines: ["Amidst my madness,\ngreed ran over me..."],
     bg: "linear-gradient(160deg, #10090e 0%, #200d18 100%)",
   },
   {
-    title: "Unnamed Grief",
-    lines: ["There is no word for\nmissing someone who still breathes—\nso I made one: you."],
+    title: "a Hungry Heart",
+    lines: ["Do you know how it feels,\npicking up a rose and having no one to hand it to?"],
     bg: "linear-gradient(160deg, #0a0a0a 0%, #181010 100%)",
   },
 ];
 
 const thoughts = [
-  { quote: "Art is the wound that refuses to close prettily.", label: "— notebook, 3am" },
-  { quote: "Every poem I write is a door I never opened in time.", label: "— on process" },
-  { quote: "Silence has a grammar. I'm still learning its rules.", label: "— journal entry" },
-  { quote: "The rose doesn't mourn its petals. We do that for it.", label: "— Wilted Promises" },
+  { quote: "The candle watched us sin by its own light.", label: "— Damned thoughts" },
+  { quote: "You and I belong to a place beyond reason, where love has no witnesses, only the mix of pulse and breath.", label: "— Damned thoughts" },
+  { quote: "I have felt wings break inside my chest trying to reach you.", label: "— notebook, 3am" },
+  { quote: "The book lies open to our last page, sentences trailing into margins unwilling to end.", label: "— on process" },
+  { quote: "Don’t you remember how we drank starlight instead of wine, And got dizzy on the sky’s own ache?", label: "— on process" },
+  { quote: "And for a moment, we exist alone In the mouth of eternity... pressed against it.", label: "— Damned thoughts" },
 ];
+
+// Full poem content for detail pages
+const poemDetails = [
+  {
+    title: "Page 102",
+    collection: "from Wilted Promises",
+    stanzas: [
+      "I let you stain the noble parts of me.\nI showed you what it means\nto be buried in adoration.\nfoolish, I might be...",
+      "but I never loved\nwith half a heart\nI let you walk barefoot\nthrough the gardens of my soul ",
+      "because I don’t love merely\nto be loved in return\nI love to leave proof... \nthat something holy once existed in my veins.",
+    ],
+    sig: "—Bleeding in silence",
+  },
+  {
+    title: "Page 66",
+    collection: "from Wilted Promises",
+    stanzas: [
+      " can’t control my lips,\nI fear my love is too large\nfor this world to contain",
+      "so I try to make a universe for you...\nout of my kisses.",
+      
+    ],
+    sig: "—Bleeding in silence",
+  },
+  {
+    title: "Page 105",
+    collection: "from Wilted Promises",
+    stanzas: [
+      " I still remember,\n the way you said ‘I love you’....",
+      "how the earth tilted\nand the sky bowed down\nlike a drunken man\nat your words",
+      "how it made every inch of me \ndance like a clueless child...",
+    ],
+    sig: "—Bleeding in silence",
+  },
+  {
+    title: "Ghosts",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "The years go by and I sit there caged to you.\nI found myself lost between love\nand the ghost of it.",
+      "For how do you bury something\nthat never got to live?\nhow do you grieve a garden\nthat never got to bloom?",
+      "I think of us sometimes...\nand I’m left haunted by the thought of being almost together\n-almost-\n what a violent word.",
+    ],
+    sig: "—Bleeding in silence",
+  },
+  {
+    title: "Wine & Madness",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Amidst my madness…\ngreed ran over me,\nI wrote your name into the wine\nand sipped the glasses empty",
+      "for I wanted more of you\nand so I can keep you within me\nto have you intoxicate my mind and run through my veins",
+      "hoping the world would blur at the edges\nhoping reason would loosen its grip\nand show me your face… for eternity.",
+    ],
+    sig: "—Bleeding in silence",
+  },
+  {
+    title: "A Hungry Heart",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Do you know how it feels,\npicking up a rose and having no one to hand it to?\nto lay it on my desk instead of your hands",
+      "and watch it wilt away\nwither in the dark\nfalling petals rotting between the open pages",
+      "a simple rose without an address\na message with no destination\n something that once yearned for light",
+      "dried out...\nbut its dying fragrance fills the pages.",
+    ],
+    sig: "—Bleeding in silence",
+  },
+];
+
+function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  // Scroll poem content back to top whenever the poem changes
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, [currentIndex]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") onNext();
+      if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   onPrev();
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onNext, onPrev, onClose]);
+
+  return (
+    <div ref={scrollRef} style={{
+      position: "fixed", inset: 0, zIndex: 1000,
+      background: "#0f0d0b",
+      overflowY: "auto",
+      animation: "fadeInPage 0.5s ease",
+    }}>
+      <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .poem-page-verse {
+          font-size: 18.5px;
+          line-height: 2.1;
+          color: #d4c9b8;
+          margin-bottom: 2.8rem;
+          white-space: pre-line;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        .poem-page-divider {
+          text-align: center;
+          color: #6b5e4e;
+          font-size: 18px;
+          margin: 0 0 2.8rem;
+          letter-spacing: 0.5em;
+          opacity: 0.5;
+        }
+        .close-btn {
+          background: none;
+          border: 1px solid rgba(139,26,26,0.3);
+          color: #6b5e4e;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 11px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          padding: 10px 24px;
+          cursor: pointer;
+          transition: border-color 0.3s, color 0.3s;
+          border-radius: 1px;
+        }
+        .close-btn:hover { border-color: rgba(139,26,26,0.8); color: #d4c9b8; }
+        .nav-poem-btn {
+          background: none;
+          border: 1px solid rgba(139,26,26,0.3);
+          color: #6b5e4e;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 12px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          padding: 10px 22px;
+          cursor: pointer;
+          transition: border-color 0.3s, color 0.3s, background 0.3s;
+          border-radius: 1px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          white-space: nowrap;
+        }
+        .nav-poem-btn:hover:not(:disabled) { border-color: rgba(139,26,26,0.8); color: #d4c9b8; background: rgba(107,26,46,0.08); }
+        .nav-poem-btn:disabled { opacity: 0.25; cursor: default; }
+      `}</style>
+
+      {/* Top bar */}
+      <div style={{
+        position: "sticky", top: 0, zIndex: 10,
+        padding: "14px 40px",
+        background: "rgba(15,13,11,0.95)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(139,26,26,0.2)",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexWrap: "wrap", gap: "12px",
+      }}>
+        <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "18px", color: "rgba(200,160,128,0.6)" }}>
+          bleedinginsilence
+        </span>
+
+        {/* Poem counter */}
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.25em", color: "rgba(160,120,50,0.5)", textTransform: "uppercase" }}>
+          {currentIndex + 1} / {totalPoems}
+        </span>
+
+        <button className="close-btn" onClick={onClose}>← Gallery</button>
+      </div>
+
+      {/* Poem content */}
+      <div style={{ maxWidth: "660px", margin: "0 auto", padding: "3rem 1.5rem 2rem", fontFamily: "'Cormorant Garamond', Georgia, serif", color: "#d4c9b8" }}>
+        {/* Title block */}
+        <div style={{ marginBottom: "3rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(139,26,26,0.3)", textAlign: "center" }}>
+          <p style={{ fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#6b5e4e", marginBottom: "1rem" }}>
+            {poem.collection}
+          </p>
+          <h1 style={{ fontSize: "30px", fontWeight: 400, fontStyle: "italic", lineHeight: 1.35, color: "#d4c9b8" }}>
+            {poem.title}
+          </h1>
+        </div>
+
+        {/* Stanzas */}
+        {poem.stanzas.map((stanza, i) => (
+          <div key={i}>
+            <p className="poem-page-verse">{stanza}</p>
+            {i < poem.stanzas.length - 1 && (
+              <p className="poem-page-divider">✦ &nbsp; ✦ &nbsp; ✦</p>
+            )}
+          </div>
+        ))}
+
+        {/* Signature */}
+        <div style={{ textAlign: "right", fontStyle: "italic", fontSize: "13px", color: "#6b5e4e", marginTop: "3.5rem", paddingTop: "1.2rem", borderTop: "1px solid rgba(139,26,26,0.2)", letterSpacing: "0.04em" }}>
+          {poem.sig}
+        </div>
+      </div>
+
+      {/* Navigation bar */}
+      <div style={{
+        maxWidth: "660px", margin: "0 auto",
+        padding: "1.5rem 1.5rem 4rem",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        borderTop: "1px solid rgba(139,26,26,0.15)",
+        gap: "16px",
+      }}>
+        <button
+          className="nav-poem-btn"
+          onClick={onPrev}
+          disabled={currentIndex === 0}
+        >
+          ← Previous Poem
+        </button>
+
+        {/* Dot indicators */}
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          {Array.from({ length: totalPoems }).map((_, i) => (
+            <div key={i} style={{
+              width: i === currentIndex ? "20px" : "5px",
+              height: "5px",
+              borderRadius: "3px",
+              background: i === currentIndex ? "rgba(107,26,46,0.8)" : "rgba(107,26,46,0.25)",
+              transition: "width 0.35s ease, background 0.35s ease",
+            }} />
+          ))}
+        </div>
+
+        <button
+          className="nav-poem-btn"
+          onClick={onNext}
+          disabled={currentIndex === totalPoems - 1}
+        >
+          Next Poem →
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function BleedingInSilence() {
   const [hoveredPoem, setHoveredPoem] = useState(null);
+  const [selectedPoem, setSelectedPoem] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
@@ -84,6 +330,16 @@ export default function BleedingInSilence() {
 
   return (
     <div style={{ background: "#080608", minHeight: "100vh", fontFamily: "'Cormorant Garamond', 'Georgia', serif", color: "#e8e0d4", overflowX: "hidden" }}>
+      {selectedPoem !== null && (
+        <PoemPage
+          poem={poemDetails[selectedPoem]}
+          currentIndex={selectedPoem}
+          totalPoems={poemDetails.length}
+          onClose={() => setSelectedPoem(null)}
+          onPrev={() => setSelectedPoem(i => Math.max(0, i - 1))}
+          onNext={() => setSelectedPoem(i => Math.min(poemDetails.length - 1, i + 1))}
+        />
+      )}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap');
 
@@ -255,7 +511,7 @@ export default function BleedingInSilence() {
           <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "24px", color: "#c8a080" }}>bleedinginsilence</span>
         </button>
         <div style={{ display: "flex", gap: "32px" }}>
-          {[["Poetry", "poetry"], ["Book", "shop"], ["Thoughts", "thoughts"]].map(([label, id]) => (
+          {[["Book", "shop"], ["Poetry", "poetry"], ["Thoughts", "thoughts"], ["About", "about"]].map(([label, id]) => (
             <button key={id} className="nav-link" onClick={() => scrollTo(id)}>{label}</button>
           ))}
         </div>
@@ -316,14 +572,14 @@ export default function BleedingInSilence() {
               marginBottom: "3rem",
               letterSpacing: "0.02em",
             }}>
-              where love goes to confess
+              Is out now!
             </p>
           </FadeIn>
 
           <FadeIn delay={0.9}>
             <div style={{ display: "flex", gap: "24px", justifyContent: "center", flexWrap: "wrap" }}>
-              <button className="buy-btn" onClick={() => scrollTo("poetry")}>Read Poetry</button>
-              <button className="buy-btn" style={{ borderColor: "rgba(160,120,50,0.4)" }} onClick={() => scrollTo("shop")}>Get the Book</button>
+              <button className="buy-btn" onClick={() => scrollTo("shop")}>Get the Book</button>
+              <button className="buy-btn" style={{ borderColor: "rgba(160,120,50,0.4)" }} onClick={() => scrollTo("poetry")}>Read Poetry</button>
             </div>
           </FadeIn>
         </div>
@@ -335,70 +591,13 @@ export default function BleedingInSilence() {
         </div>
       </section>
 
-      {/* POETRY GRID */}
-      <section id="poetry" style={{ padding: "100px 40px", maxWidth: "1200px", margin: "0 auto" }}>
-        <FadeIn>
-          <div style={{ textAlign: "center", marginBottom: "64px" }}>
-            <p className="section-label">the verses</p>
-            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "rgba(160,120,50,0.5)", whiteSpace: "nowrap" }}>from Wilted Promises</span></div>
-            <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#ede5d8" }}>
-              A Gallery of Grief
-            </h2>
-          </div>
-        </FadeIn>
-
-        <div className="poems-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
-          {poems.map((poem, i) => (
-            <FadeIn key={poem.title} delay={i * 0.1}>
-              <div
-                className="poem-card"
-                style={{ background: poem.bg }}
-                onMouseEnter={() => setHoveredPoem(i)}
-                onMouseLeave={() => setHoveredPoem(null)}
-              >
-                {/* Ornamental corner marks */}
-                <div style={{ position: "absolute", top: "12px", left: "12px", width: "20px", height: "20px", borderTop: "1px solid rgba(160,120,50,0.3)", borderLeft: "1px solid rgba(160,120,50,0.3)", zIndex: 3, transition: "border-color 0.4s", borderColor: hoveredPoem === i ? "rgba(160,120,50,0.8)" : "rgba(160,120,50,0.3)" }} />
-                <div style={{ position: "absolute", top: "12px", right: "12px", width: "20px", height: "20px", borderTop: "1px solid rgba(160,120,50,0.3)", borderRight: "1px solid rgba(160,120,50,0.3)", zIndex: 3 }} />
-                <div style={{ position: "absolute", bottom: "12px", left: "12px", width: "20px", height: "20px", borderBottom: "1px solid rgba(160,120,50,0.3)", borderLeft: "1px solid rgba(160,120,50,0.3)", zIndex: 3 }} />
-                <div style={{ position: "absolute", bottom: "12px", right: "12px", width: "20px", height: "20px", borderBottom: "1px solid rgba(160,120,50,0.3)", borderRight: "1px solid rgba(160,120,50,0.3)", zIndex: 3 }} />
-
-                {/* Rose motif faint */}
-                <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "80px", height: "80px", borderRadius: "50%", background: "radial-gradient(circle, rgba(107,26,46,0.15) 0%, transparent 70%)", zIndex: 1, transition: "transform 0.5s ease", scale: hoveredPoem === i ? "1.3" : "1" }} />
-
-                <div className="poem-card-content">
-                  <p className="poem-glow" style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontStyle: "italic",
-                    fontSize: "20px",
-                    lineHeight: "1.9",
-                    color: hoveredPoem === i ? "#ede5d8" : "rgba(232,224,212,0.75)",
-                    whiteSpace: "pre-line",
-                    marginBottom: "1.2rem",
-                    transition: "color 0.5s ease",
-                  }}>{poem.lines[0]}</p>
-                  <div style={{ height: "1px", background: "linear-gradient(90deg, rgba(107,26,46,0.6), transparent)", marginBottom: "0.8rem" }} />
-                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(160,120,50,0.6)" }}>{poem.title}</p>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
-
-      {/* DIVIDER */}
-      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 40px" }}>
-        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(107,26,46,0.4), transparent)" }} />
-      </div>
-
       {/* BOOK SHOP */}
       <section id="shop" style={{ padding: "100px 40px", maxWidth: "1200px", margin: "0 auto" }}>
         <FadeIn>
           <div style={{ textAlign: "center", marginBottom: "64px" }}>
-            <p className="section-label">the collection</p>
-            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "rgba(160,120,50,0.5)" }}>poetry &amp; prose</span></div>
-            <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#ede5d8" }}>
-              The Book
-            </h2>
+            
+            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "40px", color: "rgba(160,120,50,0.5)" }}>The Book</span></div>
+            
           </div>
         </FadeIn>
 
@@ -444,7 +643,7 @@ export default function BleedingInSilence() {
           {/* Book details */}
           <FadeIn delay={0.3}>
             <div>
-              <p className="section-label" style={{ marginBottom: "16px" }}>first edition</p>
+
               <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 400, color: "#ede5d8", marginBottom: "8px", lineHeight: 1.1 }}>
                 Wilted Promises
               </h3>
@@ -455,25 +654,27 @@ export default function BleedingInSilence() {
               <p style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 fontStyle: "italic",
-                fontSize: "18px",
-                color: "rgba(160,120,50,0.85)",
+                fontSize: "20px",
+                color: "rgba(177, 173, 168, 0.85)",
                 marginBottom: "32px",
                 lineHeight: "1.7",
                 borderLeft: "2px solid rgba(107,26,46,0.5)",
                 paddingLeft: "20px",
               }}>
-                "For art-starved souls who have loved something<br/>that refused to stay."
+                These poems are written for deep-hearted souls, great minds, and those who love wildly and madly. They will hold you when you're fragile, sit beside you and show you there’s still beauty in the fall.
               </p>
 
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "15px", color: "rgba(232,224,212,0.6)", lineHeight: "1.9", marginBottom: "40px" }}>
-                A debut collection of 130 poems navigating the ruins of love, the silence
-                between goodbyes, and the strange beauty of carrying grief. Written in
-                the dark. Offered to the light.
-              </p>
+              
 
               <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center" }}>
                 <a href="http://getbook.to/wiltedpromises" target="_blank" rel="noopener noreferrer"><button className="buy-btn" style={{ fontSize: "12px" }}>Order Now</button></a>
-                <button className="buy-btn" style={{ borderColor: "transparent", color: "rgba(160,120,50,0.7)", fontSize: "12px" }}>Read a Sample →</button>
+                <button
+                  className="buy-btn"
+                  style={{ borderColor: "transparent", color: "rgba(160,120,50,0.7)", fontSize: "12px" }}
+                  onClick={() => document.getElementById('poetry')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Read a Sample →
+                </button>
               </div>
 
               <div style={{ display: "flex", gap: "40px", marginTop: "48px" }}>
@@ -494,15 +695,67 @@ export default function BleedingInSilence() {
         <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(107,26,46,0.4), transparent)" }} />
       </div>
 
+      {/* POETRY GRID */}
+      <section id="poetry" style={{ padding: "100px 40px", maxWidth: "1200px", margin: "0 auto" }}>
+        <FadeIn>
+          <div style={{ textAlign: "center", marginBottom: "64px" }}>
+            
+            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "40px", color: "rgba(160,120,50,0.5)", whiteSpace: "nowrap" }}>Poetry</span></div>
+            
+          </div>
+        </FadeIn>
+
+        <div className="poems-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+          {poems.map((poem, i) => (
+            <FadeIn key={poem.title} delay={i * 0.1}>
+              <div
+                className="poem-card"
+                style={{ background: poem.bg }}
+                onMouseEnter={() => setHoveredPoem(i)}
+                onMouseLeave={() => setHoveredPoem(null)}
+                onClick={() => setSelectedPoem(i)}
+              >
+                {/* Ornamental corner marks */}
+                <div style={{ position: "absolute", top: "12px", left: "12px", width: "20px", height: "20px", borderTop: "1px solid rgba(160,120,50,0.3)", borderLeft: "1px solid rgba(160,120,50,0.3)", zIndex: 3, transition: "border-color 0.4s", borderColor: hoveredPoem === i ? "rgba(160,120,50,0.8)" : "rgba(160,120,50,0.3)" }} />
+                <div style={{ position: "absolute", top: "12px", right: "12px", width: "20px", height: "20px", borderTop: "1px solid rgba(160,120,50,0.3)", borderRight: "1px solid rgba(160,120,50,0.3)", zIndex: 3 }} />
+                <div style={{ position: "absolute", bottom: "12px", left: "12px", width: "20px", height: "20px", borderBottom: "1px solid rgba(160,120,50,0.3)", borderLeft: "1px solid rgba(160,120,50,0.3)", zIndex: 3 }} />
+                <div style={{ position: "absolute", bottom: "12px", right: "12px", width: "20px", height: "20px", borderBottom: "1px solid rgba(160,120,50,0.3)", borderRight: "1px solid rgba(160,120,50,0.3)", zIndex: 3 }} />
+
+                {/* Rose motif faint */}
+                <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "80px", height: "80px", borderRadius: "50%", background: "radial-gradient(circle, rgba(107,26,46,0.15) 0%, transparent 70%)", zIndex: 1, transition: "transform 0.5s ease", scale: hoveredPoem === i ? "1.3" : "1" }} />
+
+                <div className="poem-card-content">
+                  <p className="poem-glow" style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontStyle: "italic",
+                    fontSize: "20px",
+                    lineHeight: "1.9",
+                    color: hoveredPoem === i ? "#ede5d8" : "rgba(232,224,212,0.75)",
+                    whiteSpace: "pre-line",
+                    marginBottom: "1.2rem",
+                    transition: "color 0.5s ease",
+                  }}>{poem.lines[0]}</p>
+                  <div style={{ height: "1px", background: "linear-gradient(90deg, rgba(107,26,46,0.6), transparent)", marginBottom: "0.8rem" }} />
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(160,120,50,0.6)" }}>{poem.title}</p>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
+
+      {/* DIVIDER */}
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 40px" }}>
+        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(107,26,46,0.4), transparent)" }} />
+      </div>
+
       {/* THOUGHTS & FRAGMENTS */}
       <section id="thoughts" style={{ padding: "100px 40px", maxWidth: "1100px", margin: "0 auto" }}>
         <FadeIn>
           <div style={{ textAlign: "center", marginBottom: "64px" }}>
             <p className="section-label">scattered &amp; unfinished</p>
-            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "rgba(160,120,50,0.5)" }}>the in-between</span></div>
-            <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#ede5d8" }}>
-              Random Thoughts
-            </h2>
+            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "40px", color: "rgba(160,120,50,0.5)" }}>the in-between</span></div>
+            
           </div>
         </FadeIn>
 
@@ -519,80 +772,133 @@ export default function BleedingInSilence() {
           ))}
         </div>
 
-        {/* Framed "paintings" gallery */}
-        <FadeIn delay={0.2}>
-          <p className="section-label" style={{ textAlign: "center", marginBottom: "40px" }}>the canvases</p>
+        {/* Framed "paintings" gallery - removed */}
+      </section>
+
+
+      {/* DIVIDER */}
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 40px" }}>
+        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(107,26,46,0.4), transparent)" }} />
+      </div>
+
+      {/* ABOUT ME */}
+      <section id="about" style={{ padding: "100px 40px", maxWidth: "900px", margin: "0 auto" }}>
+        <FadeIn>
+          <div style={{ textAlign: "center", marginBottom: "64px" }}>
+            <p className="section-label">the voice behind the verses</p>
+            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "rgba(160,120,50,0.5)", whiteSpace: "nowrap" }}>bleedinginsilence</span></div>
+            <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#ede5d8" }}>
+              About Me
+            </h2>
+          </div>
         </FadeIn>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "32px" }}>
-          {[
-            { title: "Beauty Within", subtitle: "oil on canvas, 2024" },
-            { title: "The Mourning Hour", subtitle: "mixed media, 2024" },
-            { title: "Unnamed #4", subtitle: "watercolour, 2023" },
-          ].map((painting, i) => (
-            <FadeIn key={painting.title} delay={i * 0.15}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "64px", alignItems: "start" }}>
+          {/* Decorative left panel */}
+          <FadeIn delay={0.1}>
+            <div style={{ position: "relative" }}>
+              {/* Ornamental frame */}
               <div style={{
-                position: "relative",
-                padding: "16px",
-                background: "linear-gradient(145deg, #1a1208, #100a06)",
+                padding: "40px 28px",
+                background: "linear-gradient(145deg, #1a0810, #100a06)",
                 border: "1px solid rgba(160,120,50,0.25)",
                 borderRadius: "1px",
+                position: "relative",
+                textAlign: "center",
               }}>
-                {/* Gold frame corners */}
-                {[["0", "0", "top", "left"], ["0", "auto", "top", "right"], ["auto", "0", "bottom", "left"], ["auto", "auto", "bottom", "right"]].map(([t2, r2, bt, bl], ci) => (
+                {/* Gold corners */}
+                {[["top","left"],["top","right"],["bottom","left"],["bottom","right"]].map(([v,h], ci) => (
                   <div key={ci} style={{
                     position: "absolute",
-                    top: t2 !== "auto" ? "6px" : undefined,
-                    right: r2 !== "auto" ? "6px" : undefined,
-                    bottom: bt === "bottom" ? "6px" : undefined,
-                    left: bl === "left" ? "6px" : undefined,
-                    width: "16px", height: "16px",
-                    borderTop: bt === "top" ? "1.5px solid rgba(160,120,50,0.7)" : undefined,
-                    borderBottom: bt === "bottom" ? "1.5px solid rgba(160,120,50,0.7)" : undefined,
-                    borderLeft: bl === "left" ? "1.5px solid rgba(160,120,50,0.7)" : undefined,
-                    borderRight: r2 !== "auto" ? "1.5px solid rgba(160,120,50,0.7)" : undefined,
+                    [v]: "8px", [h]: "8px",
+                    width: "18px", height: "18px",
+                    borderTop: v === "top" ? "1.5px solid rgba(160,120,50,0.6)" : undefined,
+                    borderBottom: v === "bottom" ? "1.5px solid rgba(160,120,50,0.6)" : undefined,
+                    borderLeft: h === "left" ? "1.5px solid rgba(160,120,50,0.6)" : undefined,
+                    borderRight: h === "right" ? "1.5px solid rgba(160,120,50,0.6)" : undefined,
                   }} />
                 ))}
 
-                {/* Mock canvas */}
+                {/* Profile image */}
                 <div style={{
-                  aspectRatio: "4/5",
-                  background: i === 0
-                    ? "linear-gradient(135deg, #1a0810 0%, #3d1525 40%, #1a0a0a 100%)"
-                    : i === 1
-                    ? "linear-gradient(135deg, #0a100a 0%, #1a2510 40%, #0a1208 100%)"
-                    : "linear-gradient(135deg, #0a0e14 0%, #10182a 40%, #080c10 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: "12px",
-                  position: "relative",
+                  width: "80px", height: "80px", borderRadius: "50%",
+                  border: "1px solid rgba(107,26,46,0.35)",
+                  margin: "0 auto 24px",
                   overflow: "hidden",
                 }}>
-                  <div style={{
-                    width: "60px", height: "60px", borderRadius: "50%",
-                    background: i === 0
-                      ? "radial-gradient(circle, rgba(107,26,46,0.3) 0%, transparent 70%)"
-                      : i === 1
-                      ? "radial-gradient(circle, rgba(30,60,20,0.3) 0%, transparent 70%)"
-                      : "radial-gradient(circle, rgba(20,40,80,0.3) 0%, transparent 70%)",
-                  }} />
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.01) 10px, rgba(255,255,255,0.01) 11px)",
-                  }} />
-                  <span style={{
-                    position: "absolute", bottom: "12px", right: "12px",
-                    fontFamily: "'Great Vibes', cursive",
-                    fontSize: "14px", color: "rgba(160,120,50,0.4)",
-                  }}>bis</span>
+                  <img
+                    src="/photo.jpg"
+                    alt="Profile"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
                 </div>
 
-                <p style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "13px", color: "#ede5d8", marginBottom: "4px" }}>{painting.title}</p>
-                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "11px", letterSpacing: "0.05em", color: "rgba(160,120,50,0.5)" }}>{painting.subtitle}</p>
+                <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: "22px", color: "rgba(160,120,50,0.8)", marginBottom: "8px" }}>BleedinginSilence</p>
+                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(232,224,212,0.35)", marginBottom: "28px" }}>Poet · Author</p>
+
+                <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(107,26,46,0.4), transparent)", marginBottom: "24px" }} />
+
+                {/* Social links */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  {[
+                    { platform: "Instagram", handle: "@bleedinginsilence11", url: "https://instagram.com/bleedinginsilence11" },
+                    { platform: "TikTok", handle: "@bleedinginsilence11", url: "https://tiktok.com/@bleedinginsilence11" },
+                  ].map(({ platform, handle, url }) => (
+                    <a key={platform} href={url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                      <div style={{
+                        padding: "10px 16px",
+                        border: "1px solid rgba(107,26,46,0.25)",
+                        borderRadius: "1px",
+                        transition: "border-color 0.3s, background 0.3s",
+                        cursor: "pointer",
+                      }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(107,26,46,0.7)"; e.currentTarget.style.background = "rgba(107,26,46,0.08)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(107,26,46,0.25)"; e.currentTarget.style.background = "transparent"; }}
+                      >
+                        <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(160,120,50,0.55)", marginBottom: "3px" }}>{platform}</p>
+                        <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "13px", color: "rgba(232,224,212,0.65)", letterSpacing: "0.03em" }}>{handle}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
-            </FadeIn>
-          ))}
+            </div>
+          </FadeIn>
+
+          {/* Bio text */}
+          <FadeIn delay={0.25}>
+            <div>
+              <div style={{ marginBottom: "40px" }}>
+  <p style={{
+    fontFamily: "'Cormorant Garamond', serif",
+    fontSize: "19px",
+    lineHeight: "2",
+    color: "rgba(232,224,212,0.72)",
+    marginBottom: "40px",
+  }}>
+    I am a writer who finds beauty in heartbreak, madness in love, and meaning in what most people run from. I write for those who feel too much and speak too little, for the ones who carry unsaid goodbyes, unanswered prayers, and memories that still hurt in the dark. "Wilted Promises" is my first published poetry book, a journey stitched together by longing, love, and the ache of what could have been. It is meant to sit with you in the places no one else does. 
+  </p>
+
+                {/* Signature */}
+                <div style={{
+                  paddingTop: "20px",
+                  borderTop: "1px solid rgba(107,26,46,0.2)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: "16px",
+                }}>
+                  
+                  <a href="http://getbook.to/wiltedpromises" target="_blank" rel="noopener noreferrer">
+                    <button className="buy-btn" style={{ fontSize: "11px", padding: "10px 28px" }}>
+                      Find My Work
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -601,15 +907,15 @@ export default function BleedingInSilence() {
         <FadeIn>
           <p style={{ fontFamily: "'Great Vibes', cursive", fontSize: "36px", color: "rgba(160,120,50,0.6)", marginBottom: "16px" }}>bleedinginsilence</p>
           <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "14px", color: "rgba(232,224,212,0.3)", letterSpacing: "0.05em", marginBottom: "32px" }}>
-            "I bled ink so you could feel something."
+            I bled ink for you.
           </p>
           <div style={{ display: "flex", gap: "32px", justifyContent: "center", marginBottom: "40px", flexWrap: "wrap" }}>
-            {["Poetry", "The Book", "Thoughts", "Contact"].map((item) => (
+            {["Poetry", "The Book", "Thoughts", "About"].map((item) => (
               <button key={item} className="nav-link" style={{ fontSize: "11px" }}>{item}</button>
             ))}
           </div>
           <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.15em", color: "rgba(232,224,212,0.2)" }}>
-            © 2024 bleedinginsilence — all words, all wounds
+            © 2026 bleedinginsilence — all words, all wounds
           </p>
         </FadeIn>
       </footer>
