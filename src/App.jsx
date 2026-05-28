@@ -29,35 +29,77 @@ const FadeIn = ({ children, delay = 0, className = "" }) => {
 
 const STATIC_POEMS = [
   {
-    title: "Requiem for a Vow",
-    lines: ["You pressed your oath\ninto my palms like a coin—\nI spent it on silence.",],
+    title: "—Wilted Promises",
+    lines: ["I let you stain the noble parts of me.\nI showed you what it means...",],
     bg: "linear-gradient(160deg, #1a0610 0%, #2d0a1a 100%)",
+    collection: "from Wilted Promises",
+    stanzas: [
+      "I let you stain the noble parts of me.\nI showed you what it means\nto be buried in adoration.\nfoolish, I might be...",
+      "but I never loved\nwith half a heart\nI let you walk barefoot\nthrough the gardens of my soul ",
+      "because I don’t love merely\nto be loved in return\nI love to leave proof... \nthat something holy once existed in my veins.",
+    ],
+    sig: "—Bleeding in silence"
   },
   {
-    title: "The Last Petal",
-    lines: ["Even roses learn\nto let go of themselves\nbefore the frost comes."],
+    title: "—Wilted Promises",
+    lines: ["I can’t control my lips,\nI fear my love is too large..."],
     bg: "linear-gradient(160deg, #0e0a1a 0%, #1c1030 100%)",
+    collection: "from Wilted Promises",
+    stanzas: [
+      " can’t control my lips,\nI fear my love is too large\nfor this world to contain",
+      "so I try to make a universe for you...\nout of my kisses.",
+    ],
+    sig: "—Bleeding in silence"
   },
   {
-    title: "Ink & Ash",
-    lines: ["I wrote you in ink\nthat burns like memory—\nyou read none of it."],
+    title: "—Wilted Promises",
+    lines: ["I still remember,\nthe way you said ‘I love you’...."],
     bg: "linear-gradient(160deg, #100a0a 0%, #241010 100%)",
+    collection: "from Wilted Promises",
+    stanzas: [
+      " I still remember,\n the way you said ‘I love you’....",
+      "how the earth tilted\nand the sky bowed down\nlike a drunken man\nat your words",
+      "how it made every inch of me \ndance like a clueless child...",
+    ],
+    sig: "—Bleeding in silence"
   },
   {
-    title: "Hollow Season",
-    lines: ["Autumn isn't loss.\nIt is the tree confessing\nit was never whole."],
+    title: "Ghosts",
+    lines: ["The years go by and I sit there caged to you\nI found myself lost between love..."],
     bg: "linear-gradient(160deg, #0a0e14 0%, #101824 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "The years go by and I sit there caged to you.\nI found myself lost between love\nand the ghost of it.",
+      "For how do you bury something\nthat never got to live?\nhow do you grieve a garden\nthat never got to bloom?",
+      "I think of us sometimes...\nand I’m left haunted by the thought of being almost together\n-almost-\n what a violent word.",
+    ],
+    sig: "—Bleeding in silence"
   },
   {
-    title: "Tender Ruin",
-    lines: ["You called it loving.\nI called it standing still\nwhile the flood rose up."],
+    title: "Wine & Madness",
+    lines: ["Amidst my madness,\ngreed ran over me..."],
     bg: "linear-gradient(160deg, #10090e 0%, #200d18 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Amidst my madness…\ngreed ran over me,\nI wrote your name into the wine\nand sipped the glasses empty",
+      "for I wanted more of you\nand so I can keep you within me\nto have you intoxicate my mind and run through my veins",
+      "hoping the world would blur at the edges\nhoping reason would loosen its grip\nand show me your face… for eternity.",
+    ],
+    sig: "—Bleeding in silence"
   },
   {
-    title: "Unnamed Grief",
-    lines: ["There is no word for\nmissing someone who still breathes—\nso I made one: you."],
+    title: "a Hungry Heart",
+    lines: ["Do you know how it feels,\npicking up a rose and having no one to hand it to?"],
     bg: "linear-gradient(160deg, #0a0a0a 0%, #181010 100%)",
-  },
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Do you know how it feels,\npicking up a rose and having no one to hand it to?\nto lay it on my desk instead of your hands",
+      "and watch it wilt away\nwither in the dark\nfalling petals rotting between the open pages",
+      "a simple rose without an address\na message with no destination\n something that once yearned for light",
+      "dried out...\nbut its dying fragrance fills the pages.",
+    ],
+    sig: "—Bleeding in silence"
+  }
 ];
 
 const STATIC_THOUGHTS = [
@@ -93,8 +135,193 @@ const STATIC_BOOK = {
   siteIcon: null,
 };
 
+function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  // Scroll poem content back to top whenever the poem changes
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, [currentIndex]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") onNext();
+      if (e.key === "ArrowLeft"  || e.key === "ArrowUp")   onPrev();
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onNext, onPrev, onClose]);
+
+  return (
+    <div ref={scrollRef} style={{
+      position: "fixed", inset: 0, zIndex: 1000,
+      background: "#0f0d0b",
+      overflowY: "auto",
+      animation: "fadeInPage 0.5s ease",
+    }}>
+      <style>{`
+        @keyframes fadeInPage {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .poem-page-verse {
+          font-size: 18.5px;
+          line-height: 2.1;
+          color: #d4c9b8;
+          margin-bottom: 2.8rem;
+          white-space: pre-line;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        .poem-page-divider {
+          text-align: center;
+          color: #6b5e4e;
+          font-size: 18px;
+          margin: 0 0 2.8rem;
+          letter-spacing: 0.5em;
+          opacity: 0.5;
+        }
+        .close-btn {
+          background: none;
+          border: 1px solid rgba(139,26,26,0.3);
+          color: #6b5e4e;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 11px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          padding: 10px 24px;
+          cursor: pointer;
+          transition: border-color 0.3s, color 0.3s;
+          border-radius: 1px;
+        }
+        .close-btn:hover { border-color: rgba(139,26,26,0.8); color: #d4c9b8; }
+        .nav-poem-btn {
+          background: none;
+          border: 1px solid rgba(139,26,26,0.3);
+          color: #6b5e4e;
+          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-size: 12px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          padding: 10px 22px;
+          cursor: pointer;
+          transition: border-color 0.3s, color 0.3s, background 0.3s;
+          border-radius: 1px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          white-space: nowrap;
+        }
+        .nav-poem-btn:hover:not(:disabled) { border-color: rgba(139,26,26,0.8); color: #d4c9b8; background: rgba(107,26,46,0.08); }
+        .nav-poem-btn:disabled { opacity: 0.25; cursor: default; }
+      `}</style>
+
+      {/* Top bar */}
+      <div style={{
+        position: "sticky", top: 0, zIndex: 10,
+        padding: "14px 40px",
+        background: "rgba(15,13,11,0.95)",
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(139,26,26,0.2)",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexWrap: "wrap", gap: "12px",
+      }}>
+        <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "18px", color: "rgba(200,160,128,0.6)" }}>
+          bleedinginsilence
+        </span>
+
+        {/* Poem counter */}
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.25em", color: "rgba(160,120,50,0.5)", textTransform: "uppercase" }}>
+          {currentIndex + 1} / {totalPoems}
+        </span>
+
+        <button className="close-btn" onClick={onClose}>← Gallery</button>
+      </div>
+
+      {/* Poem content */}
+      <div style={{ maxWidth: "660px", margin: "0 auto", padding: "3rem 1.5rem 2rem", fontFamily: "'Cormorant Garamond', Georgia, serif", color: "#d4c9b8" }}>
+        {/* Title block */}
+        <div style={{ marginBottom: "3rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(139,26,26,0.3)", textAlign: "center" }}>
+          <p style={{ fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#6b5e4e", marginBottom: "1rem" }}>
+            {poem.collection || "from Wilted Promises"}
+          </p>
+          <h1 style={{ fontSize: "30px", fontWeight: 400, fontStyle: "italic", lineHeight: 1.35, color: "#d4c9b8" }}>
+            {poem.title}
+          </h1>
+        </div>
+
+        {/* Stanzas */}
+        {poem.stanzas && poem.stanzas.length > 0 ? (
+          poem.stanzas.map((stanza, i) => (
+            <div key={i}>
+              <p className="poem-page-verse">{stanza}</p>
+              {i < poem.stanzas.length - 1 && (
+                <p className="poem-page-divider">✦ &nbsp; ✦ &nbsp; ✦</p>
+              )}
+            </div>
+          ))
+        ) : (
+          <div>
+            <p className="poem-page-verse">{poem.lines ? poem.lines[0] : ""}</p>
+          </div>
+        )}
+
+        {/* Signature */}
+        <div style={{ textAlign: "right", fontStyle: "italic", fontSize: "13px", color: "#6b5e4e", marginTop: "3.5rem", paddingTop: "1.2rem", borderTop: "1px solid rgba(139,26,26,0.2)", letterSpacing: "0.04em" }}>
+          {poem.sig || "—Bleeding in silence"}
+        </div>
+      </div>
+
+      {/* Navigation bar */}
+      <div style={{
+        maxWidth: "660px", margin: "0 auto",
+        padding: "1.5rem 1.5rem 4rem",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        borderTop: "1px solid rgba(139,26,26,0.15)",
+        gap: "16px",
+      }}>
+        <button
+          className="nav-poem-btn"
+          onClick={onPrev}
+          disabled={currentIndex === 0}
+        >
+          ← Previous Poem
+        </button>
+
+        {/* Dot indicators */}
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          {Array.from({ length: totalPoems }).map((_, i) => (
+            <div key={i} style={{
+              width: i === currentIndex ? "20px" : "5px",
+              height: "5px",
+              borderRadius: "3px",
+              background: i === currentIndex ? "rgba(107,26,46,0.8)" : "rgba(107,26,46,0.25)",
+              transition: "width 0.35s ease, background 0.35s ease",
+            }} />
+          ))}
+        </div>
+
+        <button
+          className="nav-poem-btn"
+          onClick={onNext}
+          disabled={currentIndex === totalPoems - 1}
+        >
+          Next Poem →
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function BleedingInSilence() {
   const [hoveredPoem, setHoveredPoem] = useState(null);
+  const [selectedPoem, setSelectedPoem] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
@@ -135,7 +362,10 @@ export default function BleedingInSilence() {
             setPoemsList(fetchedPoems.map(p => ({
               title: p.title,
               lines: [p.lines],
-              bg: p.bg
+              bg: p.bg,
+              collection: p.collection,
+              stanzas: p.stanzas,
+              sig: p.sig
             })));
           }
           if (fetchedThoughts && fetchedThoughts.length > 0) {
@@ -193,6 +423,16 @@ export default function BleedingInSilence() {
 
   return (
     <div style={{ background: "#080608", minHeight: "100vh", fontFamily: "'Cormorant Garamond', 'Georgia', serif", color: "#e8e0d4", overflowX: "hidden" }}>
+      {selectedPoem !== null && (
+        <PoemPage
+          poem={poemsList[selectedPoem]}
+          currentIndex={selectedPoem}
+          totalPoems={poemsList.length}
+          onClose={() => setSelectedPoem(null)}
+          onPrev={() => setSelectedPoem(i => Math.max(0, i - 1))}
+          onNext={() => setSelectedPoem(i => Math.min(poemsList.length - 1, i + 1))}
+        />
+      )}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap');
 
@@ -466,6 +706,7 @@ export default function BleedingInSilence() {
                 style={{ background: poem.bg }}
                 onMouseEnter={() => setHoveredPoem(i)}
                 onMouseLeave={() => setHoveredPoem(null)}
+                onClick={() => setSelectedPoem(i)}
               >
                 {/* Ornamental corner marks */}
                 <div style={{ position: "absolute", top: "12px", left: "12px", width: "20px", height: "20px", borderTop: "1px solid rgba(160,120,50,0.3)", borderLeft: "1px solid rgba(160,120,50,0.3)", zIndex: 3, transition: "border-color 0.4s", borderColor: hoveredPoem === i ? "rgba(160,120,50,0.8)" : "rgba(160,120,50,0.3)" }} />
