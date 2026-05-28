@@ -395,21 +395,43 @@ export default function BleedingInSilence() {
     let active = true;
     async function fetchData() {
       try {
-        const fetchedPoems = await client.fetch(`*[_type == "poem"] | order(order asc, _createdAt asc)`);
+        const fetchedPoems = await client.fetch(`*[_type == "poem" && _id match "poem-*"] | order(order asc, _createdAt asc)`);
         const fetchedThoughts = await client.fetch(`*[_type == "thought"] | order(order asc, _createdAt asc)`);
         const fetchedPaintings = await client.fetch(`*[_type == "painting"] | order(order asc, _createdAt asc)`);
         const fetchedBook = await client.fetch(`*[_type == "book"][0]`);
 
         if (active) {
           if (fetchedPoems && fetchedPoems.length > 0) {
-            setPoemsList(fetchedPoems.map(p => ({
-              title: p.title,
-              lines: [p.lines],
-              bg: p.bg,
-              collection: p.collection,
-              stanzas: p.stanzas,
-              sig: p.sig
-            })));
+            const normalizedPoems = fetchedPoems
+              .filter((p) => p?.title && p?.lines)
+              .map((p) => ({
+                _id: p._id,
+                order: p.order,
+                title: p.title,
+                lines: [p.lines],
+                bg: p.bg,
+                collection: p.collection,
+                stanzas: p.stanzas,
+                sig: p.sig,
+              }))
+              .sort((a, b) => {
+                const pageA = /^page\s+(\d+)/i.exec(a.title || "");
+                const pageB = /^page\s+(\d+)/i.exec(b.title || "");
+                const aIsPage = Boolean(pageA);
+                const bIsPage = Boolean(pageB);
+
+                if (aIsPage && bIsPage) return Number(pageA[1]) - Number(pageB[1]);
+                if (aIsPage) return -1;
+                if (bIsPage) return 1;
+
+                const orderA = Number.isFinite(a.order) ? a.order : Number.MAX_SAFE_INTEGER;
+                const orderB = Number.isFinite(b.order) ? b.order : Number.MAX_SAFE_INTEGER;
+                if (orderA !== orderB) return orderA - orderB;
+
+                return (a.title || "").localeCompare(b.title || "");
+              });
+
+            setPoemsList(normalizedPoems);
           }
           if (fetchedThoughts && fetchedThoughts.length > 0) {
             setThoughtsList(fetchedThoughts);
@@ -743,7 +765,7 @@ export default function BleedingInSilence() {
 
         <div className="poems-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
           {poemsList.map((poem, i) => (
-            <FadeIn key={poem.title} delay={i * 0.1}>
+            <FadeIn key={poem._id || `${poem.title}-${i}`} delay={i * 0.1}>
               <div
                 className="poem-card"
                 style={{ background: poem.bg }}
