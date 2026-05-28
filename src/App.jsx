@@ -98,11 +98,22 @@ export default function BleedingInSilence() {
   const [bookDetails, setBookDetails] = useState(STATIC_BOOK);
   const [loading, setLoading] = useState(true);
 
+  const heroTitle = bookDetails.title || "Wilted Promises";
+  const titleWords = heroTitle.split(" ");
+  const firstLine = titleWords[0];
+  const secondLine = titleWords.slice(1).join(" ");
+
   useEffect(() => {
     const handler = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  useEffect(() => {
+    if (bookDetails.title) {
+      document.title = bookDetails.title;
+    }
+  }, [bookDetails.title]);
 
   useEffect(() => {
     let active = true;
@@ -374,21 +385,23 @@ export default function BleedingInSilence() {
               lineHeight: 1,
               letterSpacing: "-0.02em",
               color: "#ede5d8",
-              marginBottom: "0.5rem",
+              marginBottom: secondLine ? "0.5rem" : "2rem",
             }}>
-              Wilted
+              {firstLine}{!secondLine && <span style={{ color: "#6b1a2e" }}>.</span>}
             </h1>
-            <h1 className="hero-title" style={{
-              fontFamily: "'Libre Baskerville', serif",
-              fontSize: "clamp(4rem, 10vw, 8rem)",
-              fontWeight: 700,
-              lineHeight: 1,
-              letterSpacing: "-0.02em",
-              color: "#ede5d8",
-              marginBottom: "2rem",
-            }}>
-              Promises<span style={{ color: "#6b1a2e" }}>.</span>
-            </h1>
+            {secondLine && (
+              <h1 className="hero-title" style={{
+                fontFamily: "'Libre Baskerville', serif",
+                fontSize: "clamp(4rem, 10vw, 8rem)",
+                fontWeight: 700,
+                lineHeight: 1,
+                letterSpacing: "-0.02em",
+                color: "#ede5d8",
+                marginBottom: "2rem",
+              }}>
+                {secondLine}<span style={{ color: "#6b1a2e" }}>.</span>
+              </h1>
+            )}
           </FadeIn>
 
           <FadeIn delay={0.6}>
@@ -423,7 +436,7 @@ export default function BleedingInSilence() {
         <FadeIn>
           <div style={{ textAlign: "center", marginBottom: "64px" }}>
             <p className="section-label">the verses</p>
-            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "rgba(160,120,50,0.5)", whiteSpace: "nowrap" }}>from Wilted Promises</span></div>
+            <div className="ornamental-line"><span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "20px", color: "rgba(160,120,50,0.5)", whiteSpace: "nowrap" }}>from {bookDetails.title || "Wilted Promises"}</span></div>
             <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: "clamp(2rem, 4vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#ede5d8" }}>
               A Gallery of Grief
             </h2>
@@ -493,7 +506,7 @@ export default function BleedingInSilence() {
                 <div className="book-float" style={{ position: "relative", zIndex: 2 }}>
                   <img
                     src={bookDetails.coverImage ? urlFor(bookDetails.coverImage).url() : BOOK_COVER}
-                    alt="Wilted Promises book cover"
+                    alt={`${bookDetails.title || "Wilted Promises"} book cover`}
                     style={{
                       width: "260px",
                       height: "390px",
@@ -509,7 +522,7 @@ export default function BleedingInSilence() {
                     borderRadius: "2px 0 0 2px",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <span style={{ writingMode: "vertical-rl", textOrientation: "mixed", fontFamily: "'Cormorant Garamond', serif", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(200,160,128,0.6)", transform: "rotate(180deg)" }}>WILTED PROMISES</span>
+                    <span style={{ writingMode: "vertical-rl", textOrientation: "mixed", fontFamily: "'Cormorant Garamond', serif", fontSize: "9px", letterSpacing: "0.15em", color: "rgba(200,160,128,0.6)", transform: "rotate(180deg)" }}>{(bookDetails.title || "Wilted Promises").toUpperCase()}</span>
                   </div>
                 </div>
                 {/* Shadow */}
