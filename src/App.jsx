@@ -19,8 +19,8 @@ const FadeIn = ({ children, delay = 0, className = "" }) => {
   return (
     <div ref={ref} className={className} style={{
       opacity: inView ? 1 : 0,
-      transform: inView ? "translateY(0)" : "translateY(32px)",
-      transition: `opacity 1.1s ease ${delay}s, transform 1.1s ease ${delay}s`,
+      transform: inView ? "translateY(0)" : "translateY(16px)",
+      transition: `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`,
     }}>
       {children}
     </div>
@@ -794,7 +794,7 @@ export default function BleedingInSilence() {
 
         <div className="poems-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
           {poemsList.map((poem, i) => (
-            <FadeIn key={poem.title} delay={Math.min(i * 0.03, 0.15)}>
+            <FadeIn key={poem._id || `${poem.title}-${i}`} delay={Math.min(i * 0.03, 0.15)}>
               <div
                 className="poem-card"
                 style={{ background: poem.bg }}
