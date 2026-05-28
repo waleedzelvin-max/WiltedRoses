@@ -77,6 +77,12 @@ const STATIC_BOOK = {
   title: "Wilted Promises",
   author: "bleedinginsilence",
   authorQuote: "\"I bled ink so you could feel something.\"",
+  heroLabel: "a poet's sanctuary",
+  heroSubscript: "where love goes to confess",
+  heroBtn1Text: "Read Poetry",
+  heroBtn1Link: "poetry",
+  heroBtn2Text: "Get the Book",
+  heroBtn2Link: "shop",
   quote: "\"For art-starved souls who have loved something\nthat refused to stay.\"",
   description: "A debut collection of 130 poems navigating the ruins of love, the silence between goodbyes, and the strange beauty of carrying grief. Written in the dark. Offered to the light.",
   buyLink: "http://getbook.to/wiltedpromises",
@@ -174,6 +180,15 @@ export default function BleedingInSilence() {
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
+  };
+
+  const handleLink = (link) => {
+    if (!link) return;
+    if (link.startsWith("http://") || link.startsWith("https://")) {
+      window.open(link, "_blank", "noopener,noreferrer");
+    } else {
+      scrollTo(link.replace("#", ""));
+    }
   };
 
   return (
@@ -374,7 +389,7 @@ export default function BleedingInSilence() {
 
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "0 24px", maxWidth: "900px" }}>
           <FadeIn delay={0.1}>
-            <p className="section-label" style={{ marginBottom: "2rem" }}>a poet's sanctuary</p>
+            <p className="section-label" style={{ marginBottom: "2rem" }}>{bookDetails.heroLabel || "a poet's sanctuary"}</p>
           </FadeIn>
 
           <FadeIn delay={0.3}>
@@ -412,14 +427,14 @@ export default function BleedingInSilence() {
               marginBottom: "3rem",
               letterSpacing: "0.02em",
             }}>
-              where love goes to confess
+              {bookDetails.heroSubscript || "where love goes to confess"}
             </p>
           </FadeIn>
 
           <FadeIn delay={0.9}>
             <div style={{ display: "flex", gap: "24px", justifyContent: "center", flexWrap: "wrap" }}>
-              <button className="buy-btn" onClick={() => scrollTo("poetry")}>Read Poetry</button>
-              <button className="buy-btn" style={{ borderColor: "rgba(160,120,50,0.4)" }} onClick={() => scrollTo("shop")}>Get the Book</button>
+              <button className="buy-btn" onClick={() => handleLink(bookDetails.heroBtn1Link || "poetry")}>{bookDetails.heroBtn1Text || "Read Poetry"}</button>
+              <button className="buy-btn" style={{ borderColor: "rgba(160,120,50,0.4)" }} onClick={() => handleLink(bookDetails.heroBtn2Link || "shop")}>{bookDetails.heroBtn2Text || "Get the Book"}</button>
             </div>
           </FadeIn>
         </div>

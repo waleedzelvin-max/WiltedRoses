@@ -2,18 +2,17 @@ export default {
   name: 'book',
   title: 'Book & Site Settings',
   type: 'document',
-  // Make it a single entry by adding description
-  description: 'Manage the core book details, author settings, and global site assets like the favicon.',
+  description: 'Manage the core book details, author settings, hero section controls, and global site assets like the favicon.',
   fields: [
     {
       name: 'title',
-      title: 'Title',
+      title: 'Title / Brand Name',
       type: 'string',
       initialValue: 'Wilted Promises'
     },
     {
       name: 'author',
-      title: 'Author / Brand Name',
+      title: 'Author Name',
       type: 'string',
       description: 'Used in navigation and footer headers (e.g., bleedinginsilence)',
       initialValue: 'bleedinginsilence'
@@ -25,6 +24,48 @@ export default {
       description: 'Quote in footer (e.g., "I bled ink so you could feel something.")',
       initialValue: '"I bled ink so you could feel something."'
     },
+    // Hero Section Fields
+    {
+      name: 'heroLabel',
+      title: 'Hero Top Label',
+      type: 'string',
+      description: 'The small text above the main title (e.g., "a poet\'s sanctuary")',
+      initialValue: "a poet's sanctuary"
+    },
+    {
+      name: 'heroSubscript',
+      title: 'Hero Subscript',
+      type: 'string',
+      description: 'The cursive subtitle below the main title (e.g., "where love goes to confess")',
+      initialValue: 'where love goes to confess'
+    },
+    {
+      name: 'heroBtn1Text',
+      title: 'Hero Button 1 Text',
+      type: 'string',
+      initialValue: 'Read Poetry'
+    },
+    {
+      name: 'heroBtn1Link',
+      title: 'Hero Button 1 Link',
+      type: 'string',
+      description: 'Section ID (e.g. "poetry") or external URL (e.g. "https://example.com")',
+      initialValue: 'poetry'
+    },
+    {
+      name: 'heroBtn2Text',
+      title: 'Hero Button 2 Text',
+      type: 'string',
+      initialValue: 'Get the Book'
+    },
+    {
+      name: 'heroBtn2Link',
+      title: 'Hero Button 2 Link',
+      type: 'string',
+      description: 'Section ID (e.g. "shop") or external URL (e.g. "https://example.com")',
+      initialValue: 'shop'
+    },
+    // Book details
     {
       name: 'quote',
       title: 'Book Quote',
