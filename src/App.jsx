@@ -222,6 +222,46 @@ function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
         }
         .nav-poem-btn:hover:not(:disabled) { border-color: rgba(139,26,26,0.8); color: #d4c9b8; background: rgba(107,26,46,0.08); }
         .nav-poem-btn:disabled { opacity: 0.25; cursor: default; }
+
+        /* Responsive UI adjustments for mobile */
+        .nav-poem-btn-desktop-text { display: inline; }
+        .nav-poem-btn-mobile-text { display: none; }
+        
+        .poem-page-top-bar {
+          padding: 14px 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 12px;
+          border-bottom: 1px solid rgba(139,26,26,0.1);
+        }
+        .poem-page-footer-inner {
+          max-width: 660px;
+          margin: 0 auto;
+          padding: 1.5rem 1.5rem 2.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+
+        @media (max-width: 480px) {
+          .poem-page-top-bar {
+            padding: 10px 16px;
+          }
+          .poem-page-footer-inner {
+            padding: 1rem 1rem 1.8rem;
+            gap: 8px;
+          }
+          .nav-poem-btn {
+            padding: 8px 14px;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+          }
+          .nav-poem-btn-desktop-text { display: none; }
+          .nav-poem-btn-mobile-text { display: inline; }
+        }
       `}</style>
 
       {/* Header */}
@@ -231,12 +271,7 @@ function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
         borderBottom: "1px solid rgba(139,26,26,0.2)",
       }}>
         {/* Top bar */}
-        <div style={{
-          padding: "14px 40px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          flexWrap: "wrap", gap: "12px",
-          borderBottom: "1px solid rgba(139,26,26,0.1)",
-        }}>
+        <div className="poem-page-top-bar">
           <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "18px", color: "rgba(200,160,128,0.6)" }}>
             bleedinginsilence
           </span>
@@ -319,21 +354,14 @@ function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
         background: "rgba(15,13,11,0.95)",
         borderTop: "1px solid rgba(139,26,26,0.15)",
       }}>
-        <div style={{
-          maxWidth: "660px",
-          margin: "0 auto",
-          padding: "1.5rem 1.5rem 2.5rem",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "16px",
-        }}>
+        <div className="poem-page-footer-inner">
           <button
             className="nav-poem-btn"
             onClick={onPrev}
             disabled={currentIndex === 0}
           >
-            ← Previous Poem
+            ← <span className="nav-poem-btn-desktop-text">Previous Poem</span>
+            <span className="nav-poem-btn-mobile-text">Prev</span>
           </button>
 
           {/* Dot indicators */}
@@ -354,7 +382,8 @@ function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
             onClick={onNext}
             disabled={currentIndex === totalPoems - 1}
           >
-            Next Poem →
+            <span className="nav-poem-btn-desktop-text">Next Poem</span>
+            <span className="nav-poem-btn-mobile-text">Next</span> →
           </button>
         </div>
       </div>
@@ -743,7 +772,7 @@ export default function BleedingInSilence() {
 
         <div className="poems-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
           {poemsList.map((poem, i) => (
-            <FadeIn key={poem.title} delay={i * 0.1}>
+            <FadeIn key={poem.title} delay={Math.min(i * 0.03, 0.15)}>
               <div
                 className="poem-card"
                 style={{ background: poem.bg }}
@@ -906,7 +935,7 @@ export default function BleedingInSilence() {
 
         <div className="thoughts-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "32px", marginBottom: "64px" }}>
           {thoughtsList.map((t, i) => (
-            <FadeIn key={i} delay={i * 0.12}>
+            <FadeIn key={i} delay={Math.min(i * 0.03, 0.15)}>
               <div className="thought-card">
                 <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "18px", lineHeight: "1.8", color: "rgba(232,224,212,0.85)", marginBottom: "16px" }}>
                   {t.quote}
@@ -924,7 +953,7 @@ export default function BleedingInSilence() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "32px" }}>
           {paintingsList.map((painting, i) => (
-            <FadeIn key={painting.title} delay={i * 0.15}>
+            <FadeIn key={painting.title} delay={Math.min(i * 0.03, 0.15)}>
               <div style={{
                 position: "relative",
                 padding: "16px",
