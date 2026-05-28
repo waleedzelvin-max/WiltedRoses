@@ -57,36 +57,79 @@ const poems = [
     title: "Requiem for a Vow",
     lines: "You pressed your oath\ninto my palms like a coin—\nI spent it on silence.",
     bg: "linear-gradient(160deg, #1a0610 0%, #2d0a1a 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "You pressed your oath\ninto my palms like a coin—\nI spent it on silence.",
+      "And now I count\nthe echoes where your name\nused to live in me.",
+      "Even vows have roots\nthat reach past the last goodbye\ninto everything."
+    ],
+    sig: "— for the one whose words outlasted their heart",
     order: 1,
   },
   {
     title: "The Last Petal",
     lines: "Even roses learn\nto let go of themselves\nbefore the frost comes.",
     bg: "linear-gradient(160deg, #0e0a1a 0%, #1c1030 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Even roses learn\nto let go of themselves\nbefore the frost comes.",
+      "There is a kind of grace\nin that—the soft release\nno one asked them for.",
+      "I have been watching\nyou practice the same art,\npetal by petal.",
+      "And I, the garden,\nlearn again what I already knew:\nthat beauty costs."
+    ],
+    sig: "— written in October, when everything was letting go",
     order: 2,
   },
   {
     title: "Ink & Ash",
     lines: "I wrote you in ink\nthat burns like memory—\nyou read none of it.",
     bg: "linear-gradient(160deg, #100a0a 0%, #241010 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "I wrote you in ink\nthat burns like memory—\nyou read none of it.",
+      "The page knows your name\nbetter than you knew yourself\nwhen I gave it there.",
+      "Still I keep writing,\nbecause the fire needs somewhere\nto put its hunger."
+    ],
+    sig: "— she is the reason the ink wouldn't dry",
     order: 3,
   },
   {
     title: "Hollow Season",
     lines: "Autumn isn't loss.\nIt is the tree confessing\nit was never whole.",
     bg: "linear-gradient(160deg, #0a0e14 0%, #101824 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "Autumn isn't loss.\nIt is the tree confessing\nit was never whole.",
+      "We called it beauty—\nthe dying light, the bare branch—\nbecause we needed to.",
+      "I am the same tree.\nI am the same beautiful\nlie we tell ourselves."
+    ],
+    sig: "— for every winter that arrived early",
     order: 4,
   },
   {
     title: "Tender Ruin",
     lines: "You called it loving.\nI called it standing still\nwhile the flood rose up.",
     bg: "linear-gradient(160deg, #10090e 0%, #200d18 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "You called it loving.\nI called it standing still\nwhile the flood rose up.",
+      "There is a difference\nbetween choosing and sinking—\nyou never learned it.",
+      "But I did. God, I did.\nWater teaches what it means\nto be truly known."
+    ],
+    sig: "— the flood remembers what we forgot",
     order: 5,
   },
   {
     title: "Unnamed Grief",
     lines: "There is no word for\nmissing someone who still breathes—\nso I made one: you.",
     bg: "linear-gradient(160deg, #0a0a0a 0%, #181010 100%)",
+    collection: "from the bleeding pages",
+    stanzas: [
+      "There is no word for\nmissing someone who still breathes—\nso I made one: you.",
+      "A noun and a verb,\na season and a wound,\na you-shaped silence.",
+      "Languages have failed\neveryone who ever loved\nthe wrong way on time."
+    ],
+    sig: "— for the unnamed, who feel it anyway",
     order: 6,
   },
 ];
@@ -135,6 +178,9 @@ async function importData() {
         title: p.title,
         lines: p.lines,
         bg: p.bg,
+        collection: p.collection,
+        stanzas: p.stanzas,
+        sig: p.sig,
         order: p.order
       };
       const res = await client.create(doc);

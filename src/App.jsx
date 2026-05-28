@@ -160,10 +160,12 @@ function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
   }, [onNext, onPrev, onClose]);
 
   return (
-    <div ref={scrollRef} style={{
+    <div style={{
       position: "fixed", inset: 0, zIndex: 1000,
       background: "#0f0d0b",
-      overflowY: "auto",
+      display: "flex",
+      flexDirection: "column",
+      height: "100vh",
       animation: "fadeInPage 0.5s ease",
     }}>
       <style>{`
@@ -222,98 +224,139 @@ function PoemPage({ poem, onClose, onNext, onPrev, currentIndex, totalPoems }) {
         .nav-poem-btn:disabled { opacity: 0.25; cursor: default; }
       `}</style>
 
-      {/* Top bar */}
+      {/* Header */}
       <div style={{
-        position: "sticky", top: 0, zIndex: 10,
-        padding: "14px 40px",
+        flexShrink: 0,
         background: "rgba(15,13,11,0.95)",
-        backdropFilter: "blur(10px)",
         borderBottom: "1px solid rgba(139,26,26,0.2)",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        flexWrap: "wrap", gap: "12px",
       }}>
-        <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "18px", color: "rgba(200,160,128,0.6)" }}>
-          bleedinginsilence
-        </span>
+        {/* Top bar */}
+        <div style={{
+          padding: "14px 40px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flexWrap: "wrap", gap: "12px",
+          borderBottom: "1px solid rgba(139,26,26,0.1)",
+        }}>
+          <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: "18px", color: "rgba(200,160,128,0.6)" }}>
+            bleedinginsilence
+          </span>
 
-        {/* Poem counter */}
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.25em", color: "rgba(160,120,50,0.5)", textTransform: "uppercase" }}>
-          {currentIndex + 1} / {totalPoems}
-        </span>
+          {/* Poem counter */}
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "11px", letterSpacing: "0.25em", color: "rgba(160,120,50,0.5)", textTransform: "uppercase" }}>
+            {currentIndex + 1} / {totalPoems}
+          </span>
 
-        <button className="close-btn" onClick={onClose}>← Gallery</button>
-      </div>
+          <button className="close-btn" onClick={onClose}>← Gallery</button>
+        </div>
 
-      {/* Poem content */}
-      <div style={{ maxWidth: "660px", margin: "0 auto", padding: "3rem 1.5rem 2rem", fontFamily: "'Cormorant Garamond', Georgia, serif", color: "#d4c9b8" }}>
         {/* Title block */}
-        <div style={{ marginBottom: "3rem", paddingBottom: "1.5rem", borderBottom: "1px solid rgba(139,26,26,0.3)", textAlign: "center" }}>
-          <p style={{ fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#6b5e4e", marginBottom: "1rem" }}>
+        <div style={{
+          maxWidth: "660px",
+          margin: "0 auto",
+          padding: "2rem 1.5rem 1rem",
+          textAlign: "center"
+        }}>
+          <p style={{ fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#6b5e4e", marginBottom: "0.5rem" }}>
             {poem.collection || "from Wilted Promises"}
           </p>
           <h1 style={{ fontSize: "30px", fontWeight: 400, fontStyle: "italic", lineHeight: 1.35, color: "#d4c9b8" }}>
             {poem.title}
           </h1>
         </div>
+      </div>
 
-        {/* Stanzas */}
-        {poem.stanzas && poem.stanzas.length > 0 ? (
-          poem.stanzas.map((stanza, i) => (
-            <div key={i}>
-              <p className="poem-page-verse">{stanza}</p>
-              {i < poem.stanzas.length - 1 && (
-                <p className="poem-page-divider">✦ &nbsp; ✦ &nbsp; ✦</p>
-              )}
+      {/* Scrollable poem content */}
+      <div ref={scrollRef} style={{
+        flexGrow: 1,
+        overflowY: "auto",
+        padding: "2rem 1.5rem",
+        display: "flex",
+        flexDirection: "column",
+      }}>
+        <div style={{
+          maxWidth: "660px",
+          width: "100%",
+          margin: "auto auto", // Centered if short, scrolls normally if long
+          paddingBottom: "1.5rem",
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          color: "#d4c9b8",
+        }}>
+          {/* Stanzas */}
+          {poem.stanzas && poem.stanzas.length > 0 ? (
+            poem.stanzas.map((stanza, i) => (
+              <div key={i}>
+                <p className="poem-page-verse">{stanza}</p>
+                {i < poem.stanzas.length - 1 && (
+                  <p className="poem-page-divider">✦ &nbsp; ✦ &nbsp; ✦</p>
+                )}
+              </div>
+            ))
+          ) : (
+            <div>
+              <p className="poem-page-verse">{poem.lines ? poem.lines[0] : ""}</p>
             </div>
-          ))
-        ) : (
-          <div>
-            <p className="poem-page-verse">{poem.lines ? poem.lines[0] : ""}</p>
-          </div>
-        )}
+          )}
 
-        {/* Signature */}
-        <div style={{ textAlign: "right", fontStyle: "italic", fontSize: "13px", color: "#6b5e4e", marginTop: "3.5rem", paddingTop: "1.2rem", borderTop: "1px solid rgba(139,26,26,0.2)", letterSpacing: "0.04em" }}>
-          {poem.sig || "—Bleeding in silence"}
+          {/* Signature */}
+          <div style={{
+            textAlign: "right",
+            fontStyle: "italic",
+            fontSize: "13px",
+            color: "#6b5e4e",
+            marginTop: "3rem",
+            paddingTop: "1.2rem",
+            borderTop: "1px solid rgba(139,26,26,0.2)",
+            letterSpacing: "0.04em",
+          }}>
+            {poem.sig || "—Bleeding in silence"}
+          </div>
         </div>
       </div>
 
-      {/* Navigation bar */}
+      {/* Fixed Navigation bar */}
       <div style={{
-        maxWidth: "660px", margin: "0 auto",
-        padding: "1.5rem 1.5rem 4rem",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
+        flexShrink: 0,
+        background: "rgba(15,13,11,0.95)",
         borderTop: "1px solid rgba(139,26,26,0.15)",
-        gap: "16px",
       }}>
-        <button
-          className="nav-poem-btn"
-          onClick={onPrev}
-          disabled={currentIndex === 0}
-        >
-          ← Previous Poem
-        </button>
+        <div style={{
+          maxWidth: "660px",
+          margin: "0 auto",
+          padding: "1.5rem 1.5rem 2.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "16px",
+        }}>
+          <button
+            className="nav-poem-btn"
+            onClick={onPrev}
+            disabled={currentIndex === 0}
+          >
+            ← Previous Poem
+          </button>
 
-        {/* Dot indicators */}
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          {Array.from({ length: totalPoems }).map((_, i) => (
-            <div key={i} style={{
-              width: i === currentIndex ? "20px" : "5px",
-              height: "5px",
-              borderRadius: "3px",
-              background: i === currentIndex ? "rgba(107,26,46,0.8)" : "rgba(107,26,46,0.25)",
-              transition: "width 0.35s ease, background 0.35s ease",
-            }} />
-          ))}
+          {/* Dot indicators */}
+          <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            {Array.from({ length: totalPoems }).map((_, i) => (
+              <div key={i} style={{
+                width: i === currentIndex ? "20px" : "5px",
+                height: "5px",
+                borderRadius: "3px",
+                background: i === currentIndex ? "rgba(107,26,46,0.8)" : "rgba(107,26,46,0.25)",
+                transition: "width 0.35s ease, background 0.35s ease",
+              }} />
+            ))}
+          </div>
+
+          <button
+            className="nav-poem-btn"
+            onClick={onNext}
+            disabled={currentIndex === totalPoems - 1}
+          >
+            Next Poem →
+          </button>
         </div>
-
-        <button
-          className="nav-poem-btn"
-          onClick={onNext}
-          disabled={currentIndex === totalPoems - 1}
-        >
-          Next Poem →
-        </button>
       </div>
     </div>
   );
